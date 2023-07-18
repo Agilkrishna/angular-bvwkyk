@@ -1,0 +1,9 @@
+<h4><u>Parent - Child</u></h4>
+<div class="parent">
+  <span>Parent Component</span><br />
+  <input type="text" name="name" id="name" [(ngModel)]="parentInput" />
+  <button class="btn" (click)="onSubmit()">Submit</button>
+</div>
+<div class="child">
+  <app-child [parentData]="assignedText"> </app-child>
+</div>

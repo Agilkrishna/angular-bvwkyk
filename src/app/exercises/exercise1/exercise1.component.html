@@ -1,0 +1,99 @@
+<h1>Forms & Validators</h1>
+<pre>
+  Create an Angular form that allows users to register (mock) by filling out various fields, including name, email and password.
+
+  Requirements:
+
+  - The password field should have a custom validator that enforces specific password complexity rules.
+  - The rules are :
+    - minimum length 4 characters
+    - maximum length 10 characters
+    - atleast 1 special characters
+    - ** nice to have - Do not allow the same consecutive character.
+  - name
+    - required
+  - email
+    - must be a valid email matching a pattern
+  - Disable the form submission button until all fields are valid.
+  - Display error messages for invalid fields and overall form validation errors.
+</pre>
+<!--Do Not touch the code above this line!-->
+<hr />
+<span>YOUR CODE HERE!</span>
+<!-- main app container -->
+
+<div class="container">
+  <div class="row">
+    <form (ngSubmit)="submitForm()" [formGroup]="registrationForm" novalidate>
+      <div class="form" align='center'>
+        <br>
+        <label for="name">Name : </label>
+        <input type="text" id="name" formControlName="name" />
+        <div
+          *ngIf="
+            registrationForm.get('name')?.invalid &&
+            (registrationForm.get('name')?.dirty ||
+              registrationForm.get('name')?.touched)
+          "
+        >
+          <div *ngIf="registrationForm.get('name')?.errors?.required">
+            Name is required.
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="form" align='center'>
+        <label for="email">Email : </label>
+        <input type="email" id="email" formControlName="email" />
+        <div
+          *ngIf="
+            registrationForm.get('email')?.invalid &&
+            (registrationForm.get('email')?.dirty ||
+              registrationForm.get('email')?.touched)
+          "
+        >
+          <div *ngIf="registrationForm.get('email')?.errors?.required">
+            Email is required.
+          </div>
+          <div *ngIf="registrationForm.get('email')?.errors?.pattern">
+            Please provide proper email format.
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="form" align='center'>
+        <label for="password">Password : </label>
+        <input type="password" id="password" formControlName="password" />
+        <div
+          *ngIf="
+            registrationForm.get('password')?.invalid &&
+            (registrationForm.get('password')?.dirty ||
+              registrationForm.get('password')?.touched)
+          "
+        >
+          <div *ngIf="registrationForm.get('password')?.errors?.required">
+            Password is required.
+          </div>
+          <div *ngIf="registrationForm.get('password')?.errors?.minlength">
+            Min Password Length (4)
+          </div>
+          <div *ngIf="registrationForm.get('password')?.errors?.maxlength">
+            Max Password Length (10)
+          </div>
+          <div *ngIf="registrationForm.get('password')?.errors?.specialChars">
+            Password should have atleast 1 special character.
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="form" align='center'>
+      <button 
+        type="submit"
+        [disabled]="registrationForm.invalid"
+       >
+        Submit
+      </button>
+    </div>
+    </form>
+  </div>
+</div>

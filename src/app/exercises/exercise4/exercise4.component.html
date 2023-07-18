@@ -1,0 +1,28 @@
+<h1>Performance Improvements</h1>
+
+<pre>
+  Update the component `ProductListComponent` that is provided below to improve the performance.
+  The component should still be able to do the following.
+
+  Requirements:
+  - DO NOT USE ChangeDetection : None
+  - Load a list of 10 products initially
+  - When a user reaches the bottom of the page, it should load new products (200px buffer)
+  - Display the product information
+  - Display the "time spent on page"
+
+  Performance Requirement:
+  - We want to avoid running change detection when not required.
+  As you can see in the top-right section of the screen, the "Number of viewChecked" increases as the user interacts with the page.
+  That number should remain low and only increase when new changes are being added to the page.
+  - The "Time spent on time" should not affect the "viewChecked" count.
+  - We do not want to completely rerender ProductComponent when new products are added to the list. Only the new products should be recreated.
+  As you can see in the top-right section, the "Highest number of product initialized" is increasing. It should remain at `1` given products are never removed / recreated.
+  - We want to only load 10 products at a time. Right now the application is loading multiple pages at once due to an issue.
+
+
+</pre>
+<!--Do Not touch the code above this line!-->
+<hr/>
+
+<app-product-list></app-product-list>
