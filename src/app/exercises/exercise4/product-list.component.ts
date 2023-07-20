@@ -1,9 +1,13 @@
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DoCheck,
   HostListener,
+  OnChanges,
   OnInit,
+SimpleChanges,
 } from '@angular/core';
 
 @Component({
@@ -27,13 +31,14 @@ import {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit , DoCheck{
+
   products: Product[] = [];
   viewCheckedCount = 0;
   highestNumberOfProductInitialized = 0;
   timer = new Date(0, 0, 0);
   initialLoadComplete = false;
-
+  constructor(private cdRef: ChangeDetectorRef) {}
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     const documentHeight = document.body.scrollHeight;
@@ -67,7 +72,9 @@ export class ProductListComponent implements OnInit {
       count
     );
   }
-
+  ngDoCheck(){
+    this.viewCheckedCount++;
+  }
   loadInitialProducts() {
     const initialProducts = Array(10)
       .fill('')
@@ -90,6 +97,7 @@ export class ProductListComponent implements OnInit {
     this.products = this.products.concat(...newProducts).map((p) => ({ ...p }));
   }
 }
+
 
 export interface Product {
   id: string;
