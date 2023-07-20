@@ -11,40 +11,46 @@ import {
   template: `
     <h2>Product List</h2>
     <div style="position: fixed; top: 0; right: 0; background: black; color: white;">
-      <div >Number of viewChecked: {{viewCheckedCount}}</div>
-      <div>Highest number of product initialized: {{highestNumberOfProductInitialized}}</div>
-      <div>Time spent on page: {{timer | date:'HH:mm:ss'}}</div>
+      <div>Number of viewChecked: {{ viewCheckedCount }}</div>
+      <div>Highest number of product initialized: {{ highestNumberOfProductInitialized }}</div>
+      <div>Time spent on page: {{ timer | date: 'HH:mm:ss' }}</div>
     </div>
 
     <ul>
       <li *ngFor="let product of products">
-        <app-product [product]="product" (initializedCount)="updateHighestNumberOfProductInitialized($event)"></app-product>
+        <app-product
+          [product]="product"
+          (initializedCount)="updateHighestNumberOfProductInitialized($event)"
+        ></app-product>
       </li>
     </ul>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListComponent implements OnInit, AfterViewChecked {
+export class ProductListComponent implements OnInit {
   products: Product[] = [];
   viewCheckedCount = 0;
   highestNumberOfProductInitialized = 0;
   timer = new Date(0, 0, 0);
+  initialLoadComplete = false;
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
-    let documentHeight = document.body.scrollHeight;
-    let currentScroll = window.scrollY + window.innerHeight;
-    let buffer = 200;
-    if (
-      this.products.length === 10 &&
+    const documentHeight = document.body.scrollHeight;
+    const currentScroll = window.scrollY + window.innerHeight;
+    const buffer = 200;
+    if (!this.initialLoadComplete && currentScroll >= documentHeight - buffer) {
+      this.loadInitialProducts();
+    } else if (
+      this.initialLoadComplete &&
       currentScroll >= documentHeight - buffer
     ) {
       this.loadProducts();
     }
-    this.viewCheckedCount++;
   }
 
   ngOnInit() {
-    this.loadProducts();
+    this.loadInitialProducts();
 
     const delay = 100;
     let timeSpent = 0;
@@ -62,8 +68,18 @@ export class ProductListComponent implements OnInit, AfterViewChecked {
     );
   }
 
+  loadInitialProducts() {
+    const initialProducts = Array(10)
+      .fill('')
+      .map((o, i) => ({
+        id: i.toString(),
+        description: `mock product description ${i}`,
+      }));
+    this.products = initialProducts.map((p) => ({ ...p }));
+    this.initialLoadComplete = true;
+  }
+
   loadProducts() {
-    // DO NOT CHANGE THIS FUNCTION
     const start = this.products.length;
     const newProducts = Array(10)
       .fill('')
@@ -72,10 +88,6 @@ export class ProductListComponent implements OnInit, AfterViewChecked {
         description: `mock product description ${i + start}`,
       }));
     this.products = this.products.concat(...newProducts).map((p) => ({ ...p }));
-  }
-
-  ngAfterViewChecked(): void {
-    // Do Nothing
   }
 }
 
