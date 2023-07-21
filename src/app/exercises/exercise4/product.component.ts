@@ -11,7 +11,6 @@ import {
 @Component({
   selector: 'app-product',
   template: `
-    {{ count }}
     <img [src]="'https://picsum.photos/id/'+product.id+'/200/300'">
     <p>{{ product.description }}</p>
   `,

@@ -1,7 +1,9 @@
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DoCheck,
   HostListener,
   OnInit,
 } from '@angular/core';
@@ -18,14 +20,15 @@ import {
 
     <ul>
     {{products|json}}
-      <li *ngFor="let product of products; let i = index">
+      <li *ngFor="let product of products; trackBy: trackByProductId">
         <app-product [product]="product" (initializedCount)="updateHighestNumberOfProductInitialized($event)"></app-product>
       </li>
     </ul>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListComponent implements OnInit, AfterViewChecked {
+export class ProductListComponent implements OnInit,DoCheck {
+  constructor(private cdr: ChangeDetectorRef) {}
   products: Product[] = [];
   viewCheckedCount = 0;
   highestNumberOfProductInitialized = 0;
@@ -39,6 +42,9 @@ export class ProductListComponent implements OnInit, AfterViewChecked {
     if (currentScroll + buffer > documentHeight) {
       this.loadProducts();
     }
+  }
+  trackByProductId(index: number, product: Product): string {
+    return product.id;
   }
 
   ngOnInit() {
@@ -71,9 +77,10 @@ export class ProductListComponent implements OnInit, AfterViewChecked {
     this.products = this.products.concat(...newProducts).map((p) => ({ ...p }));
   }
 
-  ngAfterViewChecked(): void {
+ 
+  ngDoCheck(): void {
     ++this.viewCheckedCount;
-  }
+    }
 }
 
 export interface Product {
