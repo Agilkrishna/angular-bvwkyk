@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -14,6 +15,7 @@ import {
     <img [src]="'https://picsum.photos/id/'+product.id+'/200/300'">
     <p>{{ product.description }}</p>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductComponent implements OnInit, AfterViewInit {
   static productCreationCount: any = {};
