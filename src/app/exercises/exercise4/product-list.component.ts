@@ -24,10 +24,10 @@ import {
       </li>
     </ul>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProductListComponent implements OnInit, AfterViewChecked {
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(private cd: ChangeDetectorRef) {}
   private previousProductsLength: number = 0;
   products: Product[] = [];
   viewCheckedCount = 0;
