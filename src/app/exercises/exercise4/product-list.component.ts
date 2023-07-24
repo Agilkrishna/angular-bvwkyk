@@ -19,7 +19,6 @@ import {
     </div>
 
     <ul>
-    {{products}}
       <li *ngFor="let product of products; trackBy: trackByProductId">
         <app-product [product]="product" (initializedCount)="updateHighestNumberOfProductInitialized($event)"></app-product>
       </li>
