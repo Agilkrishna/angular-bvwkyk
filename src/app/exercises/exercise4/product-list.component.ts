@@ -19,16 +19,16 @@ import {
     </div>
 
     <ul>
-    {{products|json}}
+    {{products}}
       <li *ngFor="let product of products; trackBy: trackByProductId">
         <app-product [product]="product" (initializedCount)="updateHighestNumberOfProductInitialized($event)"></app-product>
       </li>
     </ul>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ProductListComponent implements OnInit,DoCheck {
-  constructor(private cdr: ChangeDetectorRef) {}
+export class ProductListComponent implements OnInit, AfterViewChecked {
+  private previousProductsLength: number = 0;
   products: Product[] = [];
   viewCheckedCount = 0;
   highestNumberOfProductInitialized = 0;
@@ -77,10 +77,12 @@ export class ProductListComponent implements OnInit,DoCheck {
     this.products = this.products.concat(...newProducts).map((p) => ({ ...p }));
   }
 
- 
-  ngDoCheck(): void {
-    ++this.viewCheckedCount;
+  ngAfterViewChecked(): void {
+    if (this.products.length > this.previousProductsLength) {
+      this.previousProductsLength = this.products.length;
+      ++this.viewCheckedCount;
     }
+  }
 }
 
 export interface Product {
