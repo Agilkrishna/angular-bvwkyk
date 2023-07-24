@@ -24,7 +24,7 @@ import {
       </li>
     </ul>
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent implements OnInit, AfterViewChecked {
   constructor(private cd: ChangeDetectorRef) {}
@@ -79,10 +79,10 @@ export class ProductListComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.products.length > this.previousProductsLength) {
-      this.previousProductsLength = this.products.length;
+    // if (this.products.length > this.previousProductsLength) {
+    //   this.previousProductsLength = this.products.length;
       ++this.viewCheckedCount;
-    }
+  // }
   }
 }
 
