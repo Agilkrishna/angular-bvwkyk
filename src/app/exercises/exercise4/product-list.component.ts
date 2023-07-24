@@ -24,7 +24,7 @@ import {
       </li>
     </ul>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProductListComponent implements OnInit, AfterViewChecked {
   constructor(private cd: ChangeDetectorRef) {}
@@ -75,14 +75,14 @@ export class ProductListComponent implements OnInit, AfterViewChecked {
         description: `mock product description ${i + start}`,
       }));
     this.products = this.products.concat(...newProducts).map((p) => ({ ...p }));
-    this.cd.markForCheck();
+    // this.cd.markForCheck();
   }
 
   ngAfterViewChecked(): void {
-    // if (this.products.length > this.previousProductsLength) {
-    //   this.previousProductsLength = this.products.length;
-      ++this.viewCheckedCount;
-  // }
+  //   // if (this.products.length > this.previousProductsLength) {
+  //   //   this.previousProductsLength = this.products.length;
+   ++this.viewCheckedCount;
+  // // }
   }
 }
 
